@@ -3,21 +3,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
-function Edit(){
+function Edit({api}){
 
     const {id} = useParams();
 
     useEffect(()=>{
 
     axios
-        .get(`/api/todos/${id}`)
+        .get(`${api}${id}`)
         .then(res => {
             const data = res.data;
             setTitle(data.title);
             setDesc(data.description)
         })
-    },[id])
+    },[api, id])
 
 
     const navigate = useNavigate();
@@ -25,10 +24,10 @@ function Edit(){
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
 
-    const updateEntry = () =>{
+    const updateEntry = () => {
 
         axios
-            .put(`/api/todos/${id}/`, {title:title,description:desc})
+            .put(`${api}${id}/`, {title:title,description:desc})
             .then(res => {
                 navigate("/")
             })

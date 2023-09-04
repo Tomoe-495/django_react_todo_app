@@ -11,6 +11,8 @@ import Sidebar from './components/Sidebar';
 import Add from './components/Add';
 import Edit from './components/Edit';
 
+const api = "http://localhost:8000/api/todos/";
+
 function App() {
   return (
     <Router>
@@ -23,9 +25,9 @@ function App() {
       <Box w="calc(100% - 200px)" ml="200px">
       <Routes>
 
-        <Route exact path="/" element={<Todos />} />
-        <Route path="/add" element={<Add />} />
-        <Route path="/edit/:id" element={<Edit />} />
+        <Route exact path="/" element={<Todos api={api} />} />
+        <Route path="/add" element={<Add api={api} />} />
+        <Route path="/edit/:id" element={<Edit api={api} />} />
 
       </Routes>
       </Box>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function Add(){
+function Add({api}){
 
     const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ function Add(){
     const enterData = () => {
 
         axios
-            .post("/api/todos/", {title:title,description:desc})
+            .post(api, {title:title,description:desc})
             .then(res => {
                 navigate("/");
             })

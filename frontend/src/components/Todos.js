@@ -12,7 +12,7 @@ function getobj(data, id){
     }
 }
 
-function Todos(){
+function Todos({api}){
 
     const navigate = useNavigate();
 
@@ -20,11 +20,11 @@ function Todos(){
     
     useEffect(()=>{
         axios
-            .get("/api/todos")
+            .get(api)
             .then(res => {
                 setData(res.data.reverse())
             })
-    },[])
+    },[api])
 
     const handleFinish = id => {
 
@@ -32,7 +32,7 @@ function Todos(){
         tempData.completed = true;
 
         axios
-            .put(`/api/todos/${id}/`, tempData)
+            .put(`${api}${id}/`, tempData)
             .then(res => {
                 
                 setData(data.map(item => 
@@ -47,7 +47,7 @@ function Todos(){
 
     const handleDelete = id => {
         axios
-            .delete(`/api/todos/${id}`)
+            .delete(`${api}${id}`)
             .then(res => {
                 setData(data.filter(item => item.id !== id))
             })
