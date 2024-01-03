@@ -17,6 +17,17 @@ function Todos({api}){
     const navigate = useNavigate();
 
     const [data, setData] = useState([]);
+   
+    const [text, setText] = useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8000/api/smth/")
+        .then(res => {
+            setText(res.data);
+        })
+    }, [])
+
+    console.log(text[0]);
     
     useEffect(()=>{
         axios

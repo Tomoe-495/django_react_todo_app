@@ -8,3 +8,9 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+
+class Smth(models.Model):
+    todo = models.ForeignKey(Todo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.todo.title
