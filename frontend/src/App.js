@@ -11,7 +11,7 @@ import Sidebar from './components/Sidebar';
 import Add from './components/Add';
 import Edit from './components/Edit';
 
-const api = "http://localhost:8000/api/";
+const api = "https://tomoe495.pythonanywhere.com/api/";
 
 function App() {
 
