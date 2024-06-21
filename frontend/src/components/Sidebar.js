@@ -1,26 +1,31 @@
 import { Button, Heading, VStack } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
-function Sidebar() {
+function Sidebar(){
 
+    const navigate = useNavigate();
+
+    const Btns = [
+        {name:"Home", link:"/"},
+        {name:"Add", link:"/add"}
+    ];
 
     return (
-        <VStack w="200px" h="100vh" backgroundColor="blackAlpha.400" boxShadow="dark-lg" pos="fixed" top="0">
+        <VStack w={{base:"100vw",md:"200px"}} h={{base:"auto", md:"100vh"}} backgroundColor="blackAlpha.600" pos={{base:"static", md:"fixed"}}>
 
-            <Heading m="30px 0" size="md">Todo App</Heading>
-            <VStack w="100%">
+            <Heading mt="30px" size="lg">Todo App</Heading>
 
+            <VStack w="80%" mt="20px">
                 {
-                    [{name:"Home", link:"/"}, {name:"Add", link:"/add"}].map((item, index) => {
+                    Btns.map((item, index) => {
                         return (
-                            <Button w="80%" variant="ghost" key={index}>
-                                <Link to={item.link}>{item.name}</Link>
+                            <Button w="100%" variant="ghost" key={index} onClick={() => navigate(item.link)}>
+                                {item.name}
                             </Button>
                         )
                     })
                 }
-
             </VStack>
 
 

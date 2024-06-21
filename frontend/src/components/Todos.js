@@ -1,96 +1,100 @@
+import { Button, Card, CardBody, CardHeader, Heading, IconButton, VStack, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { Button, Card, CardBody, CardHeader, Heading, IconButton, VStack } from "@chakra-ui/react";
 import { CloseIcon } from '@chakra-ui/icons';
 import { useNavigate } from "react-router-dom";
 
-function getobj(data, id){
-    for(let d of data){
-        if (d.id === id){
-            return d;
-        }
-    }
-}
+function Todos({ api, setOver }) {
 
-function Todos({api}){
-
-    const navigate = useNavigate();
+    const toast = useToast();
 
     const [data, setData] = useState([]);
-   
-    const [text, setText] = useState([]);
+    const [category, setCategory] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:8000/api/smth/")
-        .then(res => {
-            setText(res.data);
-        })
-    }, [])
-
-    console.log(text[0]);
-    
-    useEffect(()=>{
         axios
-            .get(api)
+            .get(api+"todos/")
             .then(res => {
                 setData(res.data.reverse())
             })
-    },[api])
+    }, [api])
+
+    useEffect(() => {
+        axios.get(api+"category/")
+            .then(res => {
+                setCategory(res.data)
+            })
+    }, [api])
 
     const handleFinish = id => {
-
-        let tempData = getobj(data, id);
-        tempData.completed = true;
-
+        const tempData = data.find(x => x.id == id);
+        tempData.completed = true
         axios
-            .put(`${api}${id}/`, tempData)
+            .put(`${api}todos/${id}/`, tempData)
             .then(res => {
-                
-                setData(data.map(item => 
-                    item.id === id ? {...item, completed: true} : item
-                    ));
-
-            }).catch(err => {
-                console.log("error while updating finish", err);
+                setData(data => data.map(item => (
+                    item.id === id ? { ...item, completed: true } : item
+                )
+                ))
             })
-
     }
 
     const handleDelete = id => {
         axios
-            .delete(`${api}${id}`)
+            .delete(`${api}todos/${id}/`)
             .then(res => {
-                setData(data.filter(item => item.id !== id))
+                setData(data => data.filter(item => item.id !== id));
+                toast({
+                    title: "Delete",
+                    description: "Entry has been deleted!",
+                    position: "bottom-right",
+                    variant: "solid",
+                    status: "warning",
+                    isClosable: true
+                })
+
             })
     }
 
-    const goEdit = id => navigate(`edit/${id}`);
-
     return (
-        <VStack w="100%" mt="40px" gap="1.5em">
+        <VStack pt="30px" w="100%" gap="1em">
 
-                <Heading>All Entries</Heading>
+            <Heading mb="50px">Entries</Heading>
 
             {
-                data.map(item => {
+                category.map(cat => {
                     return (
-                        <Card key={item.id} w="60%" variant="elevated" pos="relative">
-                            <CardHeader fontSize="lg" fontWeight="700">{item.title}</CardHeader>
-                            <hr></hr>
-                            <CardBody>{item.description}</CardBody>
+                        <VStack key={cat.id} gap={2} pt={2} px={{base:5, md:10}} pb={5} w={{base:"90%",md:"70%"}} rounded={10} background="rgba(255, 255, 255, .2)">
+                            <Heading>{cat.name}</Heading>
                             {
-                               ! item.completed ?
-                               <Button colorScheme="teal" onClick={() => handleFinish(item.id)} >Finish!</Button> : 
-                               <IconButton icon={<CloseIcon />}
-                               pos="absolute" right="10px" top="10px"
-                               colorScheme="red" size="md"
-                               onClick={() => handleDelete(item.id)} />
+                                data.filter(x => x.category.name === cat.name).map(item => {
+                                    return (
+                                        <Card key={item.id} w="100%" variant="elevated" pos="relative" onMouseOver={() => setOver("over")} onMouseOut={() => setOver("not")} >
+                                            <CardHeader>{item.title}</CardHeader>
+                                            <hr></hr>
+                                            <CardBody>{item.description}</CardBody>
+                                            {!item.completed ?
+                                                <Button size={{base:"sm", md:"md"}} colorScheme="teal" pos="absolute" top="10px" right="10px" onClick={() => navigate(`/edit/${item.id}`)} >Edit</Button> 
+                                                : null}
+                                            {item.completed ?
+                                                <IconButton
+                                                    aria-label="delete"
+                                                    icon={<CloseIcon />}
+                                                    colorScheme="red"
+                                                    onClick={() => handleDelete(item.id)}
+                                                    pos="absolute" top="10px" right="10px" /> :
+                                                <Button colorScheme="teal" onClick={() => handleFinish(item.id)}>Finish!</Button>}
+                                        </Card>
+                                    )
+                                })
                             }
-                            {! item.completed ? <Button pos="absolute" right="10px" top="10px" colorScheme="teal" onClick={() => goEdit(item.id)}>Edit</Button> : null}
-                        </Card>
+
+                        </VStack>
                     )
                 })
             }
+
 
         </VStack>
     )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   ChakraProvider,
@@ -11,28 +11,36 @@ import Sidebar from './components/Sidebar';
 import Add from './components/Add';
 import Edit from './components/Edit';
 
-const api = "http://localhost:8000/api/todos/";
+const api = "http://localhost:8000/api/";
 
 function App() {
+
+  const [over, setOver] = useState("not");
+
+  console.log(over)
+
   return (
     <Router>
 
-    <ChakraProvider theme={theme}>
-      <ColorModeSwitcher pos="fixed" right="10px" top="10px" />
+      <ChakraProvider theme={theme}>
 
-      <Sidebar />
+        <ColorModeSwitcher pos="fixed" right="10px" bottom="10px" />
 
-      <Box w="calc(100% - 200px)" ml="200px">
-      <Routes>
+        <Sidebar />
 
-        <Route exact path="/" element={<Todos api={api} />} />
-        <Route path="/add" element={<Add api={api} />} />
-        <Route path="/edit/:id" element={<Edit api={api} />} />
+        {/* <Box w={isPhone ? "100%" : "calc(100% - 200px)"} ml="200px"> */}
+        <Box w={{base:"100%", md:"calc(100% - 200px)"}} ml={{base:"0", md:"200px"}} mb="50px">
 
-      </Routes>
-      </Box>
+        <Routes>
 
-    </ChakraProvider>
+          <Route exact path="/" element={<Todos api={api} setOver={setOver} />} />
+          <Route path="/add" element={<Add api={api} />} />
+          <Route path="/edit/:id" element={<Edit api={api} />} />
+
+        </Routes>
+        </Box>
+        
+      </ChakraProvider>
     </Router>
   );
 }
