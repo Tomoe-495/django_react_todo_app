@@ -1,10 +1,10 @@
 import { Button, Heading, Input, Textarea, VStack, useToast } from "@chakra-ui/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Service from "../Service";
 
 
-function Edit({api}){
+function Edit(){
 
     const { id } = useParams();
 
@@ -17,8 +17,7 @@ function Edit({api}){
     const toast = useToast();
 
     useEffect(()=>{
-        axios
-            .get(`${api}todos/${id}/`)
+        Service.getItem("todos", id)
             .then(res => {
                 const data = res.data;
                 setTitle(data.title);
@@ -29,7 +28,7 @@ function Edit({api}){
 
 
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         if (title === "" || desc === ""){
 
             toast({
@@ -42,19 +41,21 @@ function Edit({api}){
             })
         }else{
             
-            axios
-                .put(`${api}todos/${id}/`, {title:title, description:desc, category:cat})
-                .then(res => {
-                    toast({
-                        title: "Updated",
-                        description: "Entry has been updated",
-                        position: "bottom-right",
-                        variant: "solid",
-                        status: "info",
-                        isClosable: true
-                    })
-                    navigate("/");
+            try{
+                const resp = await Service.editItem("todos", id, {title:title, description:desc, category:cat})
+                toast({
+                    title: "Updated",
+                    description: "Entry has been updated",
+                    position: "bottom-right",
+                    variant: "solid",
+                    status: "info",
+                    isClosable: true
                 })
+                navigate("/");
+            } catch (err) {
+
+            }
+                // })
         }
     }
 

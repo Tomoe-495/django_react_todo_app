@@ -11,8 +11,6 @@ import Sidebar from './components/Sidebar';
 import Add from './components/Add';
 import Edit from './components/Edit';
 
-const api = "https://tomoe495.pythonanywhere.com/api/";
-
 function App() {
 
   const [over, setOver] = useState("not");
@@ -33,9 +31,9 @@ function App() {
 
         <Routes>
 
-          <Route exact path="/" element={<Todos api={api} setOver={setOver} />} />
-          <Route path="/add" element={<Add api={api} />} />
-          <Route path="/edit/:id" element={<Edit api={api} />} />
+          <Route exact path="/" element={<Todos setOver={setOver} />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/edit/:id" element={<Edit />} />
 
         </Routes>
         </Box>

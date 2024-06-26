@@ -1,10 +1,10 @@
 import { Button, Heading, Input, Select, Textarea, VStack, useToast } from "@chakra-ui/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Service from "../Service";
 
 
-function Add({api}){
+function Add(){
 
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
@@ -14,7 +14,7 @@ function Add({api}){
     const [Category, setCategory] = useState([]);
 
     useEffect(()=>{
-        axios.get(api+"category/")
+        Service.getData("category")
         .then(res => {
             setCategory(res.data);
             setCat(res.data[0].id)
@@ -24,7 +24,7 @@ function Add({api}){
 
     const toast = useToast();
 
-    const handleEnter = () => {
+    const handleEnter = async () => {
         if (title === "" || desc === ""){
 
             toast({
@@ -39,20 +39,21 @@ function Add({api}){
 
             const formData = {title:title, description:desc, category:Category.find(x => x.id == cat)};
 
-            axios
-                .post(api+"todos/", formData)
-                .then(res => {
-                    toast({
-                        title: "Entry",
-                        description: "new Entry has been added",
-                        position: "bottom-right",
-                        variant: "solid",
-                        status: "success",
-                        isClosable: true
-                    })
-                    navigate("/");
+            try{
+                const res = await Service.addItem("todos", formData)
+                toast({
+                    title: "Entry",
+                    description: "new Entry has been added",
+                    position: "bottom-right",
+                    variant: "solid",
+                    status: "success",
+                    isClosable: true
                 })
+                navigate("/");
+            }catch (err) {
 
+            }
+ 
         }
     }
 
