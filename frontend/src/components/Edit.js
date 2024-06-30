@@ -1,4 +1,4 @@
-import { Button, Heading, Input, Textarea, VStack, useToast } from "@chakra-ui/react";
+import { Button, Heading, Image, Input, Select, Textarea, VStack, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Service from "../Service";
@@ -8,9 +8,9 @@ function Edit(){
 
     const { id } = useParams();
 
-    const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState("");
-    const [cat, setCat] = useState({});
+    const [data, setData] = useState({});
+
+    const [category, setCategory] = useState([]);
 
     const navigate = useNavigate();
 
@@ -19,17 +19,23 @@ function Edit(){
     useEffect(()=>{
         Service.getItem("todos", id)
             .then(res => {
-                const data = res.data;
-                setTitle(data.title);
-                setDesc(data.description);
-                setCat(data.category);
+                setData(res.data);
             })
     }, [id])
+
+    useEffect(() => {
+        Service.getData("category")
+        .then(res => {
+            setCategory(res.data)
+        })
+    }, [])
+    
+    console.log(data);
 
 
 
     const handleUpdate = async () => {
-        if (title === "" || desc === ""){
+        if (data.title === "" || data.description === ""){
 
             toast({
                 title: "Error",
@@ -42,7 +48,10 @@ function Edit(){
         }else{
             
             try{
-                const resp = await Service.editItem("todos", id, {title:title, description:desc, category:cat})
+                if(typeof data.image == 'string'){
+                    delete data.image
+                }
+                const resp = await Service.editItem("todos", id, data);
                 toast({
                     title: "Updated",
                     description: "Entry has been updated",
@@ -63,8 +72,17 @@ function Edit(){
         <VStack w="100%" pt="30px" gap="1em">
             <Heading mb="50px">Add Entry</Heading>
 
-            <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={title} onChange={(event) => setTitle(event.target.value)} />
-            <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={desc} onChange={(event) => setDesc(event.target.value)} ></Textarea>
+            <Image src={data.image} boxSize={10} />
+            <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={data.title} onChange={(event) => setData({ ...data, title:event.target.value })} />
+            <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={data.description} onChange={(event) => setData({...data, description:event.target.value})} ></Textarea>
+            <Select size='lg' variant='flushed' w="60%" placeholder="Select Category"  value={data.category} onChange={(event) => setData({...data, category:event.target.valule})}>
+                {category.map(item => {
+                    return (
+                        <option key={item.id} value={item.id}>{item.name}</option>
+                    )
+                })}
+            </Select>
+            <Input size='lg' variant="flushed" w="60%" type="file" onChange={e => setData({...data, image:e.target.files[0]})} />
             <Button colorScheme="teal" onClick={handleUpdate}>Update</Button>
         </VStack>
     )

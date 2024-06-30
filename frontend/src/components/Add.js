@@ -9,6 +9,7 @@ function Add(){
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [cat, setCat] = useState(0);
+    const [img, setImage] = useState({});
     const navigate = useNavigate();
 
     const [Category, setCategory] = useState([]);
@@ -37,7 +38,7 @@ function Add(){
             })
         }else{
 
-            const formData = {title:title, description:desc, category:Category.find(x => x.id == cat)};
+            const formData = {title:title, description:desc, image:img, category:cat};
 
             try{
                 const res = await Service.addItem("todos", formData)
@@ -70,6 +71,7 @@ function Add(){
                     )
                 })}
             </Select>
+            <Input size='lg' variant="flushed" w="60%" type="file" onChange={e  => setImage(e.target.files[0])} />
             <Button colorScheme="teal" onClick={handleEnter}>Enter</Button>
         </VStack>
     )

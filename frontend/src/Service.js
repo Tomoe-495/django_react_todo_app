@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API = "https://tomoe495.pythonanywhere.com/api/";
+const API = "http://localhost:8000/api/";
 
 
 // const username = 'hasnain';
@@ -24,13 +24,21 @@ const Service = {
         return axios.get(`${API}${api}/${id}/`)
     },
     editItem: (api, id, data) => {
-        return axios.put(`${API}${api}/${id}/`, data);
+        return axios.put(`${API}${api}/${id}/`, data, {
+            headers: {
+                'Content-Type': "multipart/form-data"
+            }
+        });
     },
     deleteItem: (api, id) => {
         return axios.delete(`${API}${api}/${id}/`);
     },
     addItem: (api, item) => {
-        return axios.post(`${API}${api}/`, item);
+        return axios.post(`${API}${api}/`, item, {
+            headers: {
+                'Content-Type': "multipart/form-data"
+            }
+        });
     }
 }
 
