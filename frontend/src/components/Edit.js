@@ -6,6 +6,8 @@ import Service from "../Service";
 
 function Edit(){
 
+    const api = "http://localhost:8000/"
+
     const { id } = useParams();
 
     const [title, setTitle] = useState("");

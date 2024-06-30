@@ -16,15 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 from todo import views
+from django.conf import settings
+from django.conf.urls.static import static
 
-router = routers.DefaultRouter()
-router.register(r'todos', views.TodoView, 'todo')
-router.register(r'category', views.CategoryView, 'category')
+# router = routers.DefaultRouter()
+# router.register(r'todos', views.TodoView, 'todo')
+# router.register(r'category', views.CategoryView, 'category')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/', include('todo.urls')),
     path("", views.Home)
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

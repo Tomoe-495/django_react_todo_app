@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardHeader, Heading, IconButton, VStack, useToast } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardHeader, Heading, IconButton, Image, Text, VStack, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { CloseIcon } from '@chakra-ui/icons';
 import { useNavigate } from "react-router-dom";
@@ -71,11 +71,16 @@ function Todos({ setOver }) {
                         <VStack key={cat.id} gap={2} pt={2} px={{ base: 5, md: 10 }} pb={5} w={{ base: "90%", md: "70%" }} rounded={10} background="rgba(255, 255, 255, .2)">
                             <Heading>{cat.name}</Heading>
                             {
-                                data.filter(x => x.category.name === cat.name).map(item => {
+                                data.filter(x => x.category === cat.id).map(item => {
                                     return (
                                         <Card key={item.id} w="100%" variant="elevated" pos="relative" onMouseOver={() => setOver("over")} onMouseOut={() => setOver("not")} >
                                             <CardHeader>{item.title}</CardHeader>
                                             <hr></hr>
+                                            {
+                                                item.image != null ?
+                                                <Image src={`http://localhost:8000/${item.image}`} boxSize={10} alt="couldn't get image" />
+                                                : null
+                                            }
                                             <CardBody>{item.description}</CardBody>
                                             {!item.completed ?
                                                 <Button size={{ base: "sm", md: "md" }} colorScheme="teal" pos="absolute" top="10px" right="10px" onClick={() => navigate(`/edit/${item.id}`)} >Edit</Button>

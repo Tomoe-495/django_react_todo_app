@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API = "https://tomoe495.pythonanywhere.com/api/";
+const API = "http://localhost:8000/api/";
 
 
 // const username = 'hasnain';
@@ -14,7 +14,6 @@ const API = "https://tomoe495.pythonanywhere.com/api/";
 //         'Authorization': `Basic ${token}`
 //     }
 // });
-
 
 const Service = {
     getData: (api) => {
@@ -30,7 +29,11 @@ const Service = {
         return axios.delete(`${API}${api}/${id}/`);
     },
     addItem: (api, item) => {
-        return axios.post(`${API}${api}/`, item);
+        return axios.post(`${API}${api}/`, item, {
+            headers: {
+                'Content-Type': "multipart/form-data"
+            }
+        });
     }
 }
 

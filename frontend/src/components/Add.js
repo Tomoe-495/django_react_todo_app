@@ -9,6 +9,7 @@ function Add(){
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [cat, setCat] = useState(0);
+    const [image, setImage] = useState({});
     const navigate = useNavigate();
 
     const [Category, setCategory] = useState([]);
@@ -25,7 +26,7 @@ function Add(){
     const toast = useToast();
 
     const handleEnter = async () => {
-        if (title === "" || desc === ""){
+        if (title === "" || desc === "" || image == {}){
 
             toast({
                 title: "Error",
@@ -37,7 +38,13 @@ function Add(){
             })
         }else{
 
-            const formData = {title:title, description:desc, category:Category.find(x => x.id == cat)};
+            // const formData = {title:title, description:desc, category:Category.find(x => x.id == cat)};
+            
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("description", desc);
+            formData.append("category", cat);
+            formData.append("image", image, image.name);
 
             try{
                 const res = await Service.addItem("todos", formData)
@@ -70,6 +77,7 @@ function Add(){
                     )
                 })}
             </Select>
+            <Input size='lg' w="60%" variant="flushed" type="file" onChange={e => setImage(e.target.files[0])} />
             <Button colorScheme="teal" onClick={handleEnter}>Enter</Button>
         </VStack>
     )
