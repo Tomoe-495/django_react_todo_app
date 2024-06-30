@@ -4,23 +4,23 @@ import axios from "axios";
 const API = "https://tomoe495.pythonanywhere.com/api/";
 
 
-const username = 'tomoe';
-const password = '562001';
-const token = btoa(`${username}:${password}`);
+// const username = 'hasnain';
+// const password = '12345678';
+// const token = btoa(`${username}:${password}`);
 
-const instance = axios.create({
-    baseURL: API,
-    headers: {
-      'Authorization': `Basic ${token}`
-    }
-  });
+// const instance = axios.create({
+//     baseURL: "https://tomoe495.pythonanywhere.com/",
+//     headers: {
+//         'Authorization': `Basic ${token}`
+//     }
+// });
 
-  
+
 const Service = {
-    getData : (api) => {
+    getData: (api) => {
         return axios.get(`${API}${api}/`);
     },
-    getItem : (api, id) => {
+    getItem: (api, id) => {
         return axios.get(`${API}${api}/${id}/`)
     },
     editItem: (api, id, data) => {
