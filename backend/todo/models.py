@@ -25,12 +25,12 @@ class Todo(models.Model):
         else:
             super(Todo, self).delete(*args, **kwargs)
     
-    def update(self, *args, **kwargs):
-        current_instance = Todo.objects.get(pk=self.pk)
+    def save(self, *args, **kwargs):
+        try:
+            this = Todo.objects.get(id=self.id)
+            storage, path = this.image.storage, this.image.path
+            storage.delete(path)
+        except:
+            pass
 
-        print(current_instance.image, self.image)
-        print(current_instance.image == self.image)
-        # if self.image != current_instance.image:
-        #     storage, path = self.image.storage, self.image.path
-        #     storage.delete(path)
-        super().update(*args, **kwargs)
+        super(Todo, self).save(*args, **kwargs)

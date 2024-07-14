@@ -8,7 +8,12 @@ function Edit(){
 
     const { id } = useParams();
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState({
+        title: '',
+        description: '',
+        category: 1,
+        image: ''
+    });
 
     const [category, setCategory] = useState([]);
 
@@ -31,7 +36,6 @@ function Edit(){
     }, [])
     
     console.log(data);
-
 
 
     const handleUpdate = async () => {
@@ -68,6 +72,7 @@ function Edit(){
         }
     }
 
+
     return (
         <VStack w="100%" pt="30px" gap="1em">
             <Heading mb="50px">Add Entry</Heading>
@@ -75,7 +80,7 @@ function Edit(){
             <Image src={data.image} boxSize={10} />
             <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={data.title} onChange={(event) => setData({ ...data, title:event.target.value })} />
             <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={data.description} onChange={(event) => setData({...data, description:event.target.value})} ></Textarea>
-            <Select size='lg' variant='flushed' w="60%" placeholder="Select Category"  value={data.category} onChange={(event) => setData({...data, category:event.target.valule})}>
+            <Select size='lg' variant='flushed' w="60%" placeholder="Select Category"  value={data.category} onChange={(event) => setData({...data, category:parseInt(event.target.value)})}>
                 {category.map(item => {
                     return (
                         <option key={item.id} value={item.id}>{item.name}</option>
