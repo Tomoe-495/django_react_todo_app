@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Todo, Category
+from .models import Todo, Category, TodoImage
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +30,7 @@ class TodoSerializer(serializers.ModelSerializer):
     #     instance.save()
     #     return instance
     
+class TodoImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodoImage
+        fields = "__all__"

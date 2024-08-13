@@ -26,10 +26,13 @@ SECRET_KEY = 'django-insecure-1(v#6$n(72g7w2pc+u((rs6#av2+(54gjpqu6pp)&1gn03pz%p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["tomoe495.pythonanywhere.com", "localhost"]
+ALLOWED_HOSTS = ["tomoe495.pythonanywhere.com", "localhost", "192.168.0.111", ".vercel.app"]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware'
 ]
 
@@ -61,6 +65,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://192.168.0.111:3000"
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -78,6 +83,17 @@ CORS_ALLOW_METHODS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 
 
 # CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
