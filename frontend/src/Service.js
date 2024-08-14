@@ -1,42 +1,40 @@
 import axios from "axios";
 
 
-// const API = "http://localhost:8000/api/";
-const API = "https://tomoe495.pythonanywhere.com/api/"
+const API = "http://192.168.0.111:8000/api/";
+// const API = "https://tomoe495.pythonanywhere.com/api/"
 
+const username = "tomoe";
+const password = "562001";
+const token = btoa(`${username}:${password}`);
 
-
-// const username = 'hasnain';
-// const password = '12345678';
-// const token = btoa(`${username}:${password}`);
-
-// const instance = axios.create({
-//     baseURL: "https://tomoe495.pythonanywhere.com/",
-//     headers: {
-//         'Authorization': `Basic ${token}`
-//     }
-// });
-
+const axiosInstance = axios.create({
+    baseURL: API,
+    withCredentials: true,
+    headers: {
+        'Authorization': `Basic ${token}`
+    }
+})
 
 const Service = {
     getData: (api) => {
-        return axios.get(`${API}${api}/`);
+        return axiosInstance.get(`${API}${api}/`);
     },
     getItem: (api, id) => {
-        return axios.get(`${API}${api}/${id}/`)
+        return axiosInstance.get(`${API}${api}/${id}/`)
     },
     editItem: (api, id, data) => {
-        return axios.put(`${API}${api}/${id}/`, data, {
+        return axiosInstance.put(`${API}${api}/${id}/`, data, {
             headers: {
                 'Content-Type': "multipart/form-data"
             }
         });
     },
     deleteItem: (api, id) => {
-        return axios.delete(`${API}${api}/${id}/`);
+        return axiosInstance.delete(`${API}${api}/${id}/`);
     },
     addItem: (api, item) => {
-        return axios.post(`${API}${api}/`, item, {
+        return axiosInstance.post(`${API}${api}/`, item, {
             headers: {
                 'Content-Type': "multipart/form-data"
             }

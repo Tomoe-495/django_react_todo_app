@@ -38,10 +38,21 @@ function Add(){
             })
         }else{
 
-            const formData = {title:title, description:desc, image:img, category:cat};
+            const formData = {title:title, description:desc, category:cat};
 
             try{
                 const res = await Service.addItem("todos", formData)
+                
+                const newTodoId = res.data.id;
+                
+                for(let file of img){
+                    const ImageFile = {todo:newTodoId, image:file};
+                    const response = await Service.addItem('todoimages', ImageFile);
+                    console.log(file);
+                }
+                
+                // console.log(img);
+
                 toast({
                     title: "Entry",
                     description: "new Entry has been added",
@@ -50,7 +61,9 @@ function Add(){
                     status: "success",
                     isClosable: true
                 })
+                
                 navigate("/");
+
             }catch (err) {
 
             }
@@ -71,7 +84,7 @@ function Add(){
                     )
                 })}
             </Select>
-            <Input size='lg' variant="flushed" w="60%" type="file" onChange={e  => setImage(e.target.files[0])} />
+            <Input size='lg' variant="flushed" w="60%" type="file" multiple onChange={e  => setImage(e.target.files)} />
             <Button colorScheme="teal" onClick={handleEnter}>Enter</Button>
         </VStack>
     )

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardHeader, Heading, IconButton, Image, VStack, useToast } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardHeader, HStack, Heading, IconButton, Image, VStack, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { CloseIcon } from '@chakra-ui/icons';
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,10 @@ function Todos({ setOver }) {
 
     const [data, setData] = useState([]);
     const [category, setCategory] = useState([]);
+    const [images, setImages] = useState([]);
     const navigate = useNavigate();
+
+    console.log(images)
 
     useEffect(() => {
         Service.getData("todos")
@@ -24,6 +27,13 @@ function Todos({ setOver }) {
             .then(res => {
                 setCategory(res.data)
             })
+    }, [])
+
+    useEffect(()=>{
+        Service.getData('todoimages')
+        .then(res => {
+            setImages(res.data);
+        })
     }, [])
 
     const handleFinish = async id => {
@@ -79,11 +89,13 @@ function Todos({ setOver }) {
                                         <Card key={item.id} w="100%" variant="elevated" pos="relative" onMouseOver={() => setOver("over")} onMouseOut={() => setOver("not")} >
                                             <CardHeader>{item.title}</CardHeader>
                                             <hr></hr>
+                                            <HStack>
                                             {
-                                                item.image != null ?
-                                                <Image src={item.image} boxSize={10} alt="couldn't get image" />
-                                                : null 
+                                                images.filter(x => x.todo === item.id).map((img, index) => {
+                                                    return <Image key={index} src={img.image} boxSize={10} alt="couldn't get image" />
+                                                })
                                             }
+                                            </HStack>
                                             <CardBody>{item.description}</CardBody>
                                             {!item.completed ?
                                                 <Button size={{ base: "sm", md: "md" }} colorScheme="teal" pos="absolute" top="10px" right="10px" onClick={() => navigate(`/edit/${item.id}`)} >Edit</Button>

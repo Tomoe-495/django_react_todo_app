@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   ChakraProvider,
-  theme,
+  extendTheme,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -10,12 +10,20 @@ import Todos from './components/Todos';
 import Sidebar from './components/Sidebar';
 import Add from './components/Add';
 import Edit from './components/Edit';
+import Contact from './components/Contact';
 
 function App() {
 
   const [over, setOver] = useState("not");
 
   console.log(over)
+
+  const theme = extendTheme({
+    config: {
+      initialColorMode: "dark",
+      useSystemColorMode: false
+    }
+  })
 
   return (
     <Router>
@@ -34,6 +42,7 @@ function App() {
           <Route exact path="/" element={<Todos setOver={setOver} />} />
           <Route path="/add" element={<Add />} />
           <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/contact" element={<Contact />} />
 
         </Routes>
         </Box>

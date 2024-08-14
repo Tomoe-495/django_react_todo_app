@@ -1,4 +1,4 @@
-import { Button, Heading, Image, Input, Select, Textarea, VStack, useToast } from "@chakra-ui/react";
+import { Button, HStack, Heading, Image, Input, Select, Textarea, VStack, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Service from "../Service";
@@ -15,7 +15,10 @@ function Edit(){
         image: ''
     });
 
+    const [img, setImg] = useState([]);
+
     const [category, setCategory] = useState([]);
+    const [image, setImage] = useState([]);
 
     const navigate = useNavigate();
 
@@ -34,8 +37,16 @@ function Edit(){
             setCategory(res.data)
         })
     }, [])
+
+    useEffect(() => {
+        Service.getData("todoimages")
+        .then(res => {
+            setImage(res.data)
+        })
+    }, [])
+
     
-    console.log(data);
+    console.log(img);
 
 
     const handleUpdate = async () => {
@@ -77,7 +88,14 @@ function Edit(){
         <VStack w="100%" pt="30px" gap="1em">
             <Heading mb="50px">Add Entry</Heading>
 
-            <Image src={data.image} boxSize={10} />
+            <HStack>
+            {
+                image.filter(x => x.todo === data.id).map((item, index) => {
+                    return <Image key={index} src={item.image} boxSize={10} />;
+                })
+            }
+            </HStack>
+
             <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={data.title} onChange={(event) => setData({ ...data, title:event.target.value })} />
             <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={data.description} onChange={(event) => setData({...data, description:event.target.value})} ></Textarea>
             <Select size='lg' variant='flushed' w="60%" placeholder="Select Category"  value={data.category} onChange={(event) => setData({...data, category:parseInt(event.target.value)})}>
@@ -87,7 +105,7 @@ function Edit(){
                     )
                 })}
             </Select>
-            <Input size='lg' variant="flushed" w="60%" type="file" onChange={e => setData({...data, image:e.target.files[0]})} />
+            <Input size='lg' variant="flushed" w="60%" type="file" onChange={e => setImg(e.target.files)} multiple />
             <Button colorScheme="teal" onClick={handleUpdate}>Update</Button>
         </VStack>
     )
