@@ -29,11 +29,11 @@ function Todos({ setOver }) {
             })
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         Service.getData('todoimages')
-        .then(res => {
-            setImages(res.data);
-        })
+            .then(res => {
+                setImages(res.data);
+            })
     }, [])
 
     const handleFinish = async id => {
@@ -90,11 +90,11 @@ function Todos({ setOver }) {
                                             <CardHeader>{item.title}</CardHeader>
                                             <hr></hr>
                                             <HStack>
-                                            {
-                                                images.filter(x => x.todo === item.id).map((img, index) => {
-                                                    return <Image key={index} src={img.image} boxSize={10} alt="couldn't get image" />
-                                                })
-                                            }
+                                                {
+                                                    images.filter(x => x.todo === item.id).map((img, index) => {
+                                                        return <Image key={index} src={img.image} boxSize={10} alt="couldn't get image" />
+                                                    })
+                                                }
                                             </HStack>
                                             <CardBody>{item.description}</CardBody>
                                             {!item.completed ?

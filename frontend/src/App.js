@@ -35,18 +35,18 @@ function App() {
         <Sidebar />
 
         {/* <Box w={isPhone ? "100%" : "calc(100% - 200px)"} ml="200px"> */}
-        <Box w={{base:"100%", md:"calc(100% - 200px)"}} ml={{base:"0", md:"200px"}} mb="50px">
+        <Box w={{ base: "100%", md: "calc(100% - 200px)" }} ml={{ base: "0", md: "200px" }} mb="50px">
 
-        <Routes>
+          <Routes>
 
-          <Route exact path="/" element={<Todos setOver={setOver} />} />
-          <Route path="/add" element={<Add />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/contact" element={<Contact />} />
+            <Route exact path="/" element={<Todos setOver={setOver} />} />
+            <Route path="/add" element={<Add />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/contact" element={<Contact />} />
 
-        </Routes>
+          </Routes>
         </Box>
-        
+
       </ChakraProvider>
     </Router>
   );

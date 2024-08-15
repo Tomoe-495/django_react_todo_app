@@ -12,12 +12,12 @@ const Contact = () => {
     const API_KEY = process.env.REACT_APP_API_KEY;
 
     const email = "hasnainsiddique495@gmail.com";
-    
+
     const handleMail = async () => {
-        
+
         const brevoData = {
-            sender: {email:'hasnain2202e@aptechsite.net', name:"tomoe" },
-            to: [{email}],
+            sender: { email: 'hasnain2202e@aptechsite.net', name: "tomoe" },
+            to: [{ email }],
             subject,
             htmlContent: `
             <html>
@@ -32,23 +32,23 @@ const Contact = () => {
         };
 
 
-        try{
+        try {
             const response = await axios.post(url, brevoData, {
-                    headers: {
-                        'Content-Type': "application/json",
-                        'api-key': API_KEY,
-                    },
-                }
+                headers: {
+                    'Content-Type': "application/json",
+                    'api-key': API_KEY,
+                },
+            }
             );
 
             console.log(response);
 
-            if(response.status === 201){
+            if (response.status === 201) {
                 alert('email sent');
-            }else{
+            } else {
                 alert('an error occured');
             }
-        }catch (err) {
+        } catch (err) {
             console.error(`error: ${err}`)
         }
     }

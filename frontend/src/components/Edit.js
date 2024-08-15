@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Service from "../Service";
 
 
-function Edit(){
+function Edit() {
 
     const { id } = useParams();
 
@@ -24,7 +24,7 @@ function Edit(){
 
     const toast = useToast();
 
-    useEffect(()=>{
+    useEffect(() => {
         Service.getItem("todos", id)
             .then(res => {
                 setData(res.data);
@@ -33,24 +33,24 @@ function Edit(){
 
     useEffect(() => {
         Service.getData("category")
-        .then(res => {
-            setCategory(res.data)
-        })
+            .then(res => {
+                setCategory(res.data)
+            })
     }, [])
 
     useEffect(() => {
         Service.getData("todoimages")
-        .then(res => {
-            setImage(res.data)
-        })
+            .then(res => {
+                setImage(res.data)
+            })
     }, [])
 
-    
+
     console.log(img);
 
 
     const handleUpdate = async () => {
-        if (data.title === "" || data.description === ""){
+        if (data.title === "" || data.description === "") {
 
             toast({
                 title: "Error",
@@ -60,10 +60,10 @@ function Edit(){
                 status: "error",
                 isClosable: true
             })
-        }else{
-            
-            try{
-                if(typeof data.image == 'string'){
+        } else {
+
+            try {
+                if (typeof data.image == 'string') {
                     delete data.image
                 }
                 const resp = await Service.editItem("todos", id, data);
@@ -79,7 +79,7 @@ function Edit(){
             } catch (err) {
 
             }
-                // })
+            // })
         }
     }
 
@@ -89,16 +89,16 @@ function Edit(){
             <Heading mb="50px">Add Entry</Heading>
 
             <HStack>
-            {
-                image.filter(x => x.todo === data.id).map((item, index) => {
-                    return <Image key={index} src={item.image} boxSize={10} />;
-                })
-            }
+                {
+                    image.filter(x => x.todo === data.id).map((item, index) => {
+                        return <Image key={index} src={item.image} boxSize={10} />;
+                    })
+                }
             </HStack>
 
-            <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={data.title} onChange={(event) => setData({ ...data, title:event.target.value })} />
-            <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={data.description} onChange={(event) => setData({...data, description:event.target.value})} ></Textarea>
-            <Select size='lg' variant='flushed' w="60%" placeholder="Select Category"  value={data.category} onChange={(event) => setData({...data, category:parseInt(event.target.value)})}>
+            <Input size="lg" variant="flushed" w="60%" placeholder="Enter Title" value={data.title} onChange={(event) => setData({ ...data, title: event.target.value })} />
+            <Textarea size="lg" variant="flushed" w="60%" placeholder="Enter Description" value={data.description} onChange={(event) => setData({ ...data, description: event.target.value })} ></Textarea>
+            <Select size='lg' variant='flushed' w="60%" placeholder="Select Category" value={data.category} onChange={(event) => setData({ ...data, category: parseInt(event.target.value) })}>
                 {category.map(item => {
                     return (
                         <option key={item.id} value={item.id}>{item.name}</option>
