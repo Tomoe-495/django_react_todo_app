@@ -8,8 +8,6 @@ if (window.location.host.includes(':3000')) {
     API = "https://tomoe495.pythonanywhere.com/api/";
 }
 
-console.log(API);
-
 const username = "tomoe";
 const password = "562001";
 const token = btoa(`${username}:${password}`);
