@@ -1,8 +1,14 @@
 import axios from "axios";
 
+let API = '';
 
-const API = `http://${window.location.hostname}:8000/api/`;
-// const API = "https://tomoe495.pythonanywhere.com/api/"
+if (window.location.host.includes(':3000')) {
+    API = `http://${window.location.hostname}:8000/api/`;
+} else {
+    API = "https://tomoe495.pythonanywhere.com/api/";
+}
+
+console.log(API);
 
 const username = "tomoe";
 const password = "562001";
