@@ -66,7 +66,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://192.168.0.111:3000",
-    "https://djantodo.netlify.app"
+    "https://djantodo.netlify.app",
+    "https://djan-todo.vercel.app/"
 ]
 
 CORS_ALLOW_HEADERS = [
