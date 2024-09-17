@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API = "http://192.168.0.111:8000/api/";
+const API = `http://${window.location.hostname}:8000/api/`;
 // const API = "https://tomoe495.pythonanywhere.com/api/"
 
 const username = "tomoe";

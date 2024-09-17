@@ -13,42 +13,42 @@ function Todos({ setOver }) {
     const [images, setImages] = useState([]);
     const navigate = useNavigate();
 
-    console.log(images)
-
     useEffect(() => {
-        Service.getData("todos")
-            .then(res => {
-                setData(res.data.reverse())
-            })
-    }, [])
+        const fetchData = async () => {
+            try {
+                const [todo, cate, img] = await Promise.all([
+                    Service.getData('todos'),
+                    Service.getData('category'),
+                    Service.getData('todoimages'),
+                ]);
 
-    useEffect(() => {
-        Service.getData('category')
-            .then(res => {
-                setCategory(res.data)
-            })
-    }, [])
+                setData(todo.data.reverse());
+                setCategory(cate.data);
+                setImages(img.data);
 
-    useEffect(() => {
-        Service.getData('todoimages')
-            .then(res => {
-                setImages(res.data);
-            })
+            } catch (err) {
+
+            }
+        }
+        fetchData();
     }, [])
 
     const handleFinish = async id => {
-        const tempData = data.find(x => x.id == id);
+        const tempData = data.find(x => x.id === id);
         tempData.completed = true
         const img = tempData.image
         delete tempData.image
         try {
             const res = await Service.editItem("todos", id, tempData);
-            setData(data => data.map(item => (
-                item.id === id ? { ...item, completed: true } : item
-            )
-            ))
+            if (res) {
 
-            tempData.image = img
+                setData(data => data.map(item => (
+                    item.id === id ? { ...item, completed: true } : item
+                )
+                ))
+
+                tempData.image = img
+            }
 
         } catch (err) {
 

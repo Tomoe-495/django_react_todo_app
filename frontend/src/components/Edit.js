@@ -25,29 +25,24 @@ function Edit() {
     const toast = useToast();
 
     useEffect(() => {
-        Service.getItem("todos", id)
-            .then(res => {
-                setData(res.data);
-            })
-    }, [id])
+        const fetchData = async () => {
+            try {
+                const [todo, category, img] = await Promise.all([
+                    Service.getItem('todos', id),
+                    Service.getData('category'),
+                    Service.getData(`selectiveimages/${id}`)
+                ]);
 
-    useEffect(() => {
-        Service.getData("category")
-            .then(res => {
-                setCategory(res.data)
-            })
-    }, [])
+                setData(todo.data);
+                setCategory(category.data);
+                setImage(img.data);
 
-    useEffect(() => {
-        Service.getData("todoimages")
-            .then(res => {
-                setImage(res.data)
-            })
-    }, [])
+            } catch (err) {
 
-
-    console.log(img);
-
+            }
+        }
+        fetchData();
+    }, []);
 
     const handleUpdate = async () => {
         if (data.title === "" || data.description === "") {
@@ -67,19 +62,21 @@ function Edit() {
                     delete data.image
                 }
                 const resp = await Service.editItem("todos", id, data);
-                toast({
-                    title: "Updated",
-                    description: "Entry has been updated",
-                    position: "bottom-right",
-                    variant: "solid",
-                    status: "info",
-                    isClosable: true
-                })
-                navigate("/");
+                if (resp) {
+
+                    toast({
+                        title: "Updated",
+                        description: "Entry has been updated",
+                        position: "bottom-right",
+                        variant: "solid",
+                        status: "info",
+                        isClosable: true
+                    })
+                    navigate("/");
+                }
             } catch (err) {
 
             }
-            // })
         }
     }
 

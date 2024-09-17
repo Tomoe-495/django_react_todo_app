@@ -33,4 +33,6 @@ class TodoSerializer(serializers.ModelSerializer):
 class TodoImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TodoImage
-        fields = "__all__"
+        # fields = ('id', 'todo', 'image')
+        fields = '__all__'
+

@@ -43,26 +43,31 @@ function Add() {
             try {
                 const res = await Service.addItem("todos", formData)
 
-                const newTodoId = res.data.id;
+                if(res){
 
-                for (let file of img) {
-                    const ImageFile = { todo: newTodoId, image: file };
-                    const response = await Service.addItem('todoimages', ImageFile);
-                    console.log(file);
+                    const newTodoId = res.data.id;
+                    
+                    for (let file of img) {
+                        const ImageFile = { todo: newTodoId, image: file };
+                        const response = await Service.addItem('todoimages', ImageFile);
+                        if(response){
+                            console.log(file);
+                        }
+                    }
+                    
+                    // console.log(img);
+                    
+                    toast({
+                        title: "Entry",
+                        description: "new Entry has been added",
+                        position: "bottom-right",
+                        variant: "solid",
+                        status: "success",
+                        isClosable: true
+                    })
+                    
+                    navigate("/");
                 }
-
-                // console.log(img);
-
-                toast({
-                    title: "Entry",
-                    description: "new Entry has been added",
-                    position: "bottom-right",
-                    variant: "solid",
-                    status: "success",
-                    isClosable: true
-                })
-
-                navigate("/");
 
             } catch (err) {
 

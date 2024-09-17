@@ -29,6 +29,7 @@ router.register(r'todoimages', views.TodoImageView, 'todoimages')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/selectiveimages/<int:todo_id>/', views.TodoImageListView.as_view(), name='selectiveimages'),
     path("", views.Home)
 ]
 
