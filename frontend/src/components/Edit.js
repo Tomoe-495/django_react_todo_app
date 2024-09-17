@@ -42,7 +42,7 @@ function Edit() {
             }
         }
         fetchData();
-    }, []);
+    }, [id]);
 
     const handleUpdate = async () => {
         if (data.title === "" || data.description === "") {
